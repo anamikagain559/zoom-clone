@@ -1,168 +1,226 @@
 import React, { useState, useEffect } from 'react';
 
 const Dashboard = ({ onAction }) => {
-  const [time, setTime] = useState(new Date());
+  const [activeTab, setActiveTab] = useState('upcoming');
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const meetings = [
+    {
+      id: 1,
+      title: "Product Strategy Q4",
+      time: "10:00 AM - 11:30 AM",
+      date: { month: "OCT", day: "24" },
+      status: "HAPPENING NOW",
+      attendees: 12,
+      isHappening: true
+    },
+    {
+      id: 2,
+      title: "Design System Sync",
+      time: "01:00 PM - 02:00 PM",
+      date: { month: "OCT", day: "24" },
+      idNumber: "829-112-990",
+      attendees: 2,
+      isHappening: false
+    },
+    {
+      id: 3,
+      title: "Weekly Engineering All-Hands",
+      time: "09:00 AM - 10:00 AM",
+      date: { month: "OCT", day: "25" },
+      room: "Alpha-9",
+      attendees: 45,
+      isHappening: false
+    }
+  ];
 
-  const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
-  const formatDate = (date) => {
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString(undefined, options);
-  };
+  const contacts = [
+    { name: "Alex Rivera", status: "IN A MEETING", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150", online: true },
+    { name: "Sarah Jenkins", status: "ONLINE", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150", online: true },
+    { name: "Marcus Thorne", status: "AWAY", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150", online: false },
+    { name: "Luna Kim", status: "OFFLINE", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150", online: false }
+  ];
 
   return (
-    <div className="flex flex-col h-full bg-surface">
-      <main className="flex-1 overflow-y-auto scrollbar-hide p-8 relative">
-        {/* Cockpit Background Ambient (Subtle luminance) */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-30">
-          <div className="absolute top-[5%] left-[10%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-[40%] h-[40%] bg-primary_dim/5 rounded-full blur-[120px]"></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto z-10 relative transition-pro animate-fade-in">
-          <header className="mb-10 flex justify-between items-end">
-            <div>
-              <h1 className="text-4xl font-black tracking-tight_md text-white border-none uppercase">Mission Control</h1>
-              <p className="label-sm mt-1 opacity-60">Kinetic Command • Alpha Operational</p>
+    <div className="flex h-full p-8 gap-8">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col gap-10">
+        
+        {/* Header Cards Grid */}
+        <div className="grid grid-cols-4 gap-6">
+          <div 
+            onClick={() => onAction('new')}
+            className="accent-purple card-rounded p-6 flex flex-col items-center justify-center gap-4 cursor-pointer hover:scale-[1.02] transition-pro shadow-lg"
+          >
+            <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-3xl">videocam</span>
             </div>
-            <div className="hidden md:flex gap-6 items-center">
-              <div className="flex flex-col items-end">
-                <span className="label-sm text-primary opacity-80">Link Status</span>
-                <span className="text-[10px] font-black text-white uppercase tracking-widest">Encrypted • AES-256</span>
-              </div>
-              <div className="w-12 h-12 rounded-lg bg-surface_container_low flex items-center justify-center border border-white/5">
-                <span className="material-symbols-outlined text-green-500 text-sm animate-pulse">radar</span>
-              </div>
-            </div>
-          </header>
-
-          {/* Asymmetric Bento Cockpit Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full auto-rows-max">
-            
-            {/* Primary Launch Module (Dominant) */}
-            <div className="md:col-span-8 group relative overflow-hidden surface-low rounded-lg p-10 flex flex-col justify-between transition-pro hover:bg-[#1a1a1a] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
-              <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-                <span className="material-symbols-outlined text-[160px] text-white">bolt</span>
-              </div>
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="material-symbols-outlined text-primary">rocket_launch</span>
-                  </div>
-                  <span className="label-sm font-black text-primary opacity-60 uppercase">Primary Activation</span>
-                </div>
-                <h2 className="text-5xl font-black text-white tracking-tight_md uppercase mb-2">Instant Session</h2>
-                <p className="text-on_surface_variant max-w-sm text-sm font-medium opacity-70">Initialize a high-performance mission environment with one-click authorization.</p>
-              </div>
-              <div className="mt-12 relative z-10">
-                <button 
-                  onClick={() => onAction('new')}
-                  className="command-gradient px-12 py-5 rounded-lg text-black font-black uppercase text-sm tracking-widest_lg shadow-[0_16px_40px_rgba(186,158,255,0.3)] hover:scale-[1.03] active:scale-95 transition-all duration-300"
-                >
-                  Initiate Now
-                </button>
-              </div>
-            </div>
-
-            {/* Status Terminal (Instrument Readout) */}
-            <div className="md:col-span-4 surface-low rounded-lg p-8 flex flex-col items-center justify-center text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] border border-white/5">
-              <div className="w-full flex justify-between items-center mb-8 px-2">
-                <span className="label-sm text-[9px] opacity-40">Tactical Clock</span>
-                <div className="flex gap-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                  <div className="w-1.5 h-1.5 rounded-full bg-surface_container_highest"></div>
-                </div>
-              </div>
-              <div className="text-6xl font-black tracking-tight_md text-white mb-2">
-                {formatTime(time)}
-              </div>
-              <div className="text-xs font-black text-primary uppercase tracking-widest_lg mb-8 opacity-80">
-                {formatDate(time)}
-              </div>
-              <div className="w-full space-y-3 pt-6 border-t border-white/5">
-                <div className="flex justify-between items-center px-2">
-                  <span className="text-[10px] font-black text-on_surface_variant opacity-40 uppercase">Latency</span>
-                  <span className="text-[10px] font-black text-white">24 MS</span>
-                </div>
-                <div className="flex justify-between items-center px-2">
-                  <span className="text-[10px] font-black text-on_surface_variant opacity-40 uppercase">Bandwidth</span>
-                  <span className="text-[10px] font-black text-white">124 MBPS</span>
-                </div>
-                <div className="flex justify-between items-center px-2">
-                  <span className="text-[10px] font-black text-on_surface_variant opacity-40 uppercase">Encryption</span>
-                  <span className="text-[10px] font-black text-green-500">ACTIVE</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Join Space (Recessed Action) */}
-            <div className="md:col-span-4 group cursor-pointer surface-high rounded-lg p-8 transition-pro hover:bg-[#2c2c2c] border border-white/5 flex flex-col gap-6" onClick={() => onAction('join')}>
-              <div className="flex justify-between items-start">
-                <div className="w-12 h-12 bg-primary/5 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-pro">
-                  <span className="material-symbols-outlined text-primary text-2xl">sensors</span>
-                </div>
-                <span className="material-symbols-outlined text-on_surface_variant opacity-20 group-hover:translate-x-1 transition-pro">arrow_forward</span>
-              </div>
-              <div>
-                <h3 className="text-xl font-black text-white uppercase tracking-tight_md mb-1">Join Space</h3>
-                <p className="label-sm text-[10px] opacity-60">Authorize ID Connection</p>
-              </div>
-            </div>
-
-            {/* Schedule Ops */}
-            <div className="md:col-span-4 group cursor-pointer surface-high rounded-lg p-8 transition-pro hover:bg-[#2c2c2c] border border-white/5 flex flex-col gap-6" onClick={() => onAction('schedule')}>
-              <div className="flex justify-between items-start">
-                <div className="w-12 h-12 bg-primary_dim/5 rounded-lg flex items-center justify-center group-hover:bg-primary_dim/20 transition-pro">
-                  <span className="material-symbols-outlined text-primary_dim text-2xl">calendar_add_on</span>
-                </div>
-                <span className="material-symbols-outlined text-on_surface_variant opacity-20 group-hover:translate-x-1 transition-pro">arrow_forward</span>
-              </div>
-              <div>
-                <h3 className="text-xl font-black text-white uppercase tracking-tight_md mb-1">Schedule Ops</h3>
-                <p className="label-sm text-[10px] opacity-60">Mission Architecture</p>
-              </div>
-            </div>
-
-            {/* Network Presence (Dummy Feed) */}
-            <div className="md:col-span-4 surface-low rounded-lg p-8 border border-white/5 flex flex-col shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
-              <h3 className="text-[10px] font-black text-on_surface_variant uppercase tracking-widest_lg mb-6 opacity-40">System Presence</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex -space-x-3">
-                    {[1,2,3].map(i => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-surface-low bg-surface_container_high overflow-hidden">
-                        <img 
-                          className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 transition-pro" 
-                          src={`https://lh3.googleusercontent.com/aida-public/AB6AXuCFjr2BXx3ZAiXSZiOIw_h-YawKkuGVyLvFYqMI1OVjzFAefhnywFpwlroKUEJNTpoQDF6v07-gBlnOfURbWpq7cb2Ejzlm2ijZi6xLRRFgh1h9bQxPJaFSPG-E-_PAyI9o4XzM3JCTP2qADs-5NKMKoWv91FBJ5eIDBL787GDOon_w90x5OFE_GIzfMdtfzOspv0VlXMcs7VfpHPERRyMcV8AC5dOg4H49E8UlXdpQpWKcgE2B0JZZqtj5qAluQWq88_IyQUPxJg`} 
-                        />
-                      </div>
-                    ))}
-                    <div className="w-8 h-8 rounded-full border-2 border-surface-low bg-surface_container_highest flex items-center justify-center text-[10px] font-black text-white">
-                      +12
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-black text-primary uppercase tracking-widest_lg">Nodes Active</span>
-                </div>
-                <div className="pt-4 border-t border-white/5">
-                  <p className="text-[10px] italic text-on_surface_variant opacity-40">Scanning sector for active collaboration signals...</p>
-                </div>
-              </div>
-            </div>
-
+            <span className="font-bold text-center">New Meeting</span>
           </div>
 
-          <footer className="mt-16 text-center">
-            <p className="text-[9px] text-on_surface_variant/20 tracking-[0.6em] uppercase font-black">Kinetic Command • Encryption Protocol Verified • Mission Control Center</p>
-          </footer>
+          <div 
+            onClick={() => onAction('join')}
+            className="bg-[#121212] card-rounded p-6 flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-[#181818] transition-pro border border-white/5"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary text-3xl">add_box</span>
+            </div>
+            <span className="font-bold text-white text-center">Join</span>
+          </div>
+
+          <div 
+            onClick={() => onAction('schedule')}
+            className="bg-[#121212] card-rounded p-6 flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-[#181818] transition-pro border border-white/5"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary text-3xl">calendar_today</span>
+            </div>
+            <span className="font-bold text-white text-center">Schedule</span>
+          </div>
+
+          <div 
+            className="bg-[#121212] card-rounded p-6 flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-[#181818] transition-pro border border-white/5"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary text-3xl">present_to_all</span>
+            </div>
+            <span className="font-bold text-white text-center">Share Screen</span>
+          </div>
         </div>
-      </main>
+
+        {/* Upcoming Meetings Section */}
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-white">Upcoming Meetings</h2>
+            <button className="text-primary text-sm font-semibold hover:underline">View Calendar</button>
+          </div>
+
+          <div className="space-y-4">
+            {meetings.map(meeting => (
+              <div key={meeting.id} className="bg-[#121212] card-rounded p-5 flex items-center gap-6 border border-white/5 hover:border-white/10 transition-pro">
+                {/* Date Block */}
+                <div className="flex flex-col items-center justify-center bg-[#181818] rounded-xl px-4 py-2 min-w-[80px]">
+                  <span className="text-[10px] font-bold text-on_surface_variant uppercase">{meeting.date.month}</span>
+                  <span className="text-2xl font-black text-white">{meeting.date.day}</span>
+                </div>
+
+                {/* Info Block */}
+                <div className="flex-1 flex flex-col gap-1">
+                  <div className="flex items-center gap-3">
+                    {meeting.status && (
+                      <span className="text-[10px] font-black text-[#00FF94] bg-[#00FF94]/10 px-2 py-0.5 rounded uppercase tracking-wider">
+                        {meeting.status}
+                      </span>
+                    )}
+                    <h3 className="text-lg font-bold text-white">{meeting.title}</h3>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-on_surface_variant font-medium">
+                    <span>{meeting.time}</span>
+                    {meeting.idNumber && <span>• ID: {meeting.idNumber}</span>}
+                    {meeting.room && <span>• Room: {meeting.room}</span>}
+                  </div>
+                </div>
+
+                {/* Attendees */}
+                <div className="flex items-center -space-x-2 mr-4">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#121212] bg-[#1a1a1a] overflow-hidden">
+                      <img src={`https://images.unsplash.com/photo-${1500000000000 + i}?auto=format&fit=crop&q=80&w=50`} alt="attendee" />
+                    </div>
+                  ))}
+                  <div className="w-8 h-8 rounded-full border-2 border-[#121212] bg-[#1a1a1a] flex items-center justify-center text-[10px] font-bold text-white">
+                    +{meeting.attendees}
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <button className={`px-6 py-2 rounded-xl font-bold text-sm transition-pro ${meeting.isHappening ? 'accent-purple' : 'bg-[#181818] text-white hover:bg-[#202020]'}`}>
+                  {meeting.isHappening ? 'Start' : 'Join'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right Sidebar - Active Contacts */}
+      <div className="w-80 bg-[#121212] card-rounded flex flex-col border border-white/5">
+        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+          <h2 className="text-lg font-bold text-white">Active Contacts</h2>
+          <span className="material-symbols-outlined text-on_surface_variant text-xl cursor-pointer">person_add</span>
+        </div>
+
+        {/* Contact Search */}
+        <div className="p-4">
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on_surface_variant text-lg">filter_list</span>
+            <input 
+              type="text" 
+              placeholder="Filter by name..." 
+              className="w-full bg-[#181818] border-none rounded-xl py-2 pl-10 pr-4 text-xs text-on_surface_variant focus:ring-0 outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Contacts List */}
+        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-4 scrollbar-hide">
+          {contacts.map((contact, idx) => (
+            <div key={idx} className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 rounded-xl transition-pro">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl overflow-hidden grayscale group-hover:grayscale-0 transition-pro">
+                  <img src={contact.avatar} alt={contact.name} className="w-full h-full object-cover" />
+                </div>
+                {contact.online && (
+                  <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#00FF94] border-2 border-[#121212] rounded-full"></span>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-white">{contact.name}</span>
+                <span className="text-[10px] font-bold text-on_surface_variant uppercase tracking-tighter">
+                  {contact.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Floating Bottom Bar (Meeting Controls Mockup) */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#121212]/80 backdrop-blur-xl card-rounded border border-white/5 py-3 px-6 shadow-2xl flex items-center gap-6 z-50">
+        <div className="flex items-center gap-4">
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">mic</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">Mute</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">videocam</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">Video</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">ios_share</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">Share</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">group</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">Users</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">chat_bubble</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">Chat</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">add_reaction</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">React</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 cursor-pointer group">
+            <span className="material-symbols-outlined text-white transition-pro group-hover:scale-110">more_horiz</span>
+            <span className="text-[9px] font-bold text-on_surface_variant group-hover:text-white uppercase">More</span>
+          </div>
+        </div>
+        <button className="bg-[#FF3B30] hover:bg-[#FF453A] text-white flex items-center gap-2 py-2 px-5 rounded-xl transition-pro font-bold text-sm shadow-lg shadow-red-500/20">
+          <span className="material-symbols-outlined text-sm">call_end</span>
+          End
+        </button>
+      </div>
     </div>
   );
 };

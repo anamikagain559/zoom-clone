@@ -4,11 +4,15 @@ import Dashboard from './components/Dashboard';
 import SchedulePage from './components/SchedulePage';
 import Layout from './components/Layout';
 import Room from './components/Room';
+import LoginPage from './components/LoginPage';
+
 
 function App() {
   const [view, setView] = useState('dashboard'); // 'dashboard', 'join', 'schedule', 'room'
   const [roomId, setRoomId] = useState('');
+  const [user, setUser] = useState(null); // { email, name }
   const [userName, setUserName] = useState('');
+
 
   const handleJoin = (id, name) => {
     setRoomId(id);
@@ -37,6 +41,22 @@ function App() {
     setUserName('');
   };
 
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setUserName(userData.name);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setUserName('');
+    setView('dashboard');
+  };
+
+
+  if (!user) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <>
       {view === 'room' ? (
@@ -46,7 +66,7 @@ function App() {
           onLeave={handleLeave} 
         />
       ) : (
-        <Layout onAction={handleDashboardAction} activeView={view}>
+        <Layout onAction={handleDashboardAction} activeView={view} user={user} onLogout={handleLogout}>
           {view === 'dashboard' && (
             <Dashboard onAction={handleDashboardAction} />
           )}
@@ -62,6 +82,7 @@ function App() {
       )}
     </>
   );
+
 }
 
 export default App;

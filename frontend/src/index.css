@@ -1,15 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 :root {
-  --surface: #0e0e0e;
-  --surface-container-low: #131313;
-  --surface-container-high: #20201f;
-  --primary: #ba9eff;
-  --primary-dim: #8455ef;
+  --surface: #0a0a0a;
+  --surface-container: #121212;
+  --surface-container-low: #181818;
+  --surface-container-high: #242424;
+  --primary: #9b84f3;
+  --primary-container: #ba9eff;
+  --on-primary-container: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #999999;
 }
 
 body {
@@ -32,10 +36,17 @@ h1, h2, h3, .display-lg, .headline-md {
 }
 
 .label-md, .label-sm, .metadata {
-  letter-spacing: 0.05em;
-  color: #adaaaa;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
   font-weight: 500;
-  text-transform: uppercase;
+}
+
+.card-rounded {
+  border-radius: 1.25rem;
+}
+
+.sidebar-rounded {
+  border-radius: 1rem;
 }
 
 /* Surface Philosophies - No Borders */
@@ -61,8 +72,9 @@ h1, h2, h3, .display-lg, .headline-md {
 }
 
 /* Primary Soul / Command Gradient */
-.command-gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dim) 100%);
+.accent-purple {
+  background-color: var(--primary-container);
+  color: #ffffff;
 }
 
 /* Ghost Border for Focus */
