@@ -5,10 +5,12 @@ import SchedulePage from './components/SchedulePage';
 import Layout from './components/Layout';
 import Room from './components/Room';
 import LoginPage from './components/LoginPage';
+import RegistrationPage from './components/RegistrationPage';
 
 
 function App() {
   const [view, setView] = useState('dashboard'); // 'dashboard', 'join', 'schedule', 'room'
+  const [authView, setAuthView] = useState('login'); // 'login', 'register'
   const [roomId, setRoomId] = useState('');
   const [user, setUser] = useState(null); // { email, name }
   const [userName, setUserName] = useState('');
@@ -54,7 +56,17 @@ function App() {
 
 
   if (!user) {
-    return <LoginPage onLogin={handleLogin} />;
+    return authView === 'login' ? (
+      <LoginPage 
+        onLogin={handleLogin} 
+        onSwitchToRegister={() => setAuthView('register')} 
+      />
+    ) : (
+      <RegistrationPage 
+        onRegister={handleLogin} 
+        onSwitchToLogin={() => setAuthView('login')} 
+      />
+    );
   }
 
   return (

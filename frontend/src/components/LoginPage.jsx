@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import loginBg from '../assets/login-bg.png';
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +103,7 @@ const LoginPage = ({ onLogin }) => {
 
           {/* Footer UI */}
           <div className="mt-10 pt-6 border-t border-white/5 flex flex-col items-center gap-4">
-            <p className="text-[11px] text-white/40 font-medium">New to Workspace? <span className="text-primary cursor-pointer hover:underline">Deploy Component</span></p>
+            <p className="text-[11px] text-white/40 font-medium">New to Workspace? <span onClick={onSwitchToRegister} className="text-primary cursor-pointer hover:underline font-bold transition-pro">Deploy Component</span></p>
             
             <div className="flex items-center gap-4 w-full">
               <div className="h-px bg-white/5 flex-1"></div>
