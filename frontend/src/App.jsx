@@ -14,15 +14,21 @@ function App() {
   const [roomId, setRoomId] = useState('');
   const [user, setUser] = useState(null); // { email, name }
   const [userName, setUserName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   React.useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     if (savedUser && token) {
-      const parsedUser = JSON.parse(savedUser);
-      setUser(parsedUser);
-      setUserName(parsedUser.name);
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        setUserName(parsedUser.name);
+      } catch (e) {
+        console.error("Failed to parse user session");
+      }
     }
+    setIsLoading(false);
   }, []);
 
 
@@ -67,6 +73,14 @@ function App() {
     localStorage.removeItem('user');
   };
 
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-screen bg-surface flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!user) {
     return authView === 'login' ? (
