@@ -6,15 +6,30 @@ const LoginPage = ({ onLogin, onSwitchToRegister }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate a professional login delay
-    setTimeout(() => {
-      onLogin({ email, name: email.split('@')[0] || 'Commander' });
+    try {
+      const resp = await fetch('http://localhost:3001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      
+      const data = await resp.json();
+      
+      if (resp.ok) {
+        localStorage.setItem('token', data.token);
+        onLogin(data.user);
+      } else {
+        alert(data.message || 'Access Denied');
+      }
+    } catch (err) {
+      alert('Security System offline');
+    } finally {
       setIsLoading(false);
-    }, 1200);
+    }
   };
 
   return (

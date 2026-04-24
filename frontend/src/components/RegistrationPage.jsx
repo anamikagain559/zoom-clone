@@ -8,7 +8,7 @@ const RegistrationPage = ({ onRegister, onSwitchToLogin }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match");
@@ -16,11 +16,26 @@ const RegistrationPage = ({ onRegister, onSwitchToLogin }) => {
     }
     setIsLoading(true);
     
-    // Simulate a professional registration delay
-    setTimeout(() => {
-      onRegister({ email, name: name || email.split('@')[0] });
+    try {
+      const resp = await fetch('http://localhost:3001/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+      
+      const data = await resp.json();
+      
+      if (resp.ok) {
+        localStorage.setItem('token', data.token);
+        onRegister(data.user);
+      } else {
+        alert(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      alert('Network Error: Sync Failed');
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (

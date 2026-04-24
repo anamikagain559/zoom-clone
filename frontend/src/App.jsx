@@ -15,6 +15,16 @@ function App() {
   const [user, setUser] = useState(null); // { email, name }
   const [userName, setUserName] = useState('');
 
+  React.useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (savedUser && token) {
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+      setUserName(parsedUser.name);
+    }
+  }, []);
+
 
   const handleJoin = (id, name) => {
     setRoomId(id);
@@ -46,12 +56,15 @@ function App() {
   const handleLogin = (userData) => {
     setUser(userData);
     setUserName(userData.name);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setUser(null);
     setUserName('');
     setView('dashboard');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   };
 
 
