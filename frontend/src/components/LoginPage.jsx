@@ -26,7 +26,7 @@ const LoginPage = ({ onLogin, onSwitchToRegister }) => {
         alert(data.message || 'Access Denied');
       }
     } catch (err) {
-      alert('Security System offline');
+      alert('CRITICAL ERROR: Terminal Sync Offline');
     } finally {
       setIsLoading(false);
     }

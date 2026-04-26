@@ -32,7 +32,7 @@ const RegistrationPage = ({ onRegister, onSwitchToLogin }) => {
         alert(data.message || 'Registration failed');
       }
     } catch (err) {
-      alert('Network Error: Sync Failed');
+      alert('INITIALIZATION ERROR: Uplink Failed');
     } finally {
       setIsLoading(false);
     }

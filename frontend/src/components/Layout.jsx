@@ -40,8 +40,18 @@ const Layout = ({ children, onAction, activeView, user, onLogout }) => {
           <button onClick={onLogout} className="p-2 rounded-lg hover:bg-error/10 text-on_surface_variant hover:text-error transition-pro group relative" title="Logout">
             <span className="material-symbols-outlined">logout</span>
           </button>
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10 cursor-pointer ml-2">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150" alt="profile" className="w-full h-full object-cover" />
+          <div className="hidden lg:flex flex-col items-end mr-1">
+            <span className="text-xs font-bold text-white">{user?.name}</span>
+            <span className="text-[9px] text-primary font-black uppercase tracking-widest">Authorized</span>
+          </div>
+          <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center cursor-pointer ml-1 group hover:bg-primary/20 transition-pro">
+            {user?.avatar ? (
+              <img src={user.avatar} alt="profile" className="w-full h-full object-cover rounded-xl" />
+            ) : (
+              <span className="text-sm font-black text-primary group-hover:scale-110 transition-pro">
+                {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}
+              </span>
+            )}
           </div>
         </div>
       </header>

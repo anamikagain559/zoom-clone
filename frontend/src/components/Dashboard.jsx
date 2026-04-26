@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Dashboard = ({ onAction }) => {
+const Dashboard = ({ onAction, user }) => {
   const [activeTab, setActiveTab] = useState('upcoming');
 
   const meetings = [
@@ -44,6 +44,17 @@ const Dashboard = ({ onAction }) => {
     <div className="flex h-full p-8 gap-8">
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col gap-10">
+        
+        {/* Welcome Header */}
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-black text-white tracking-tight">
+            Welcome back, <span className="text-primary">{user?.name?.split(' ')[0] || 'Commander'}</span>
+          </h1>
+          <p className="text-on_surface_variant text-sm font-medium opacity-60 uppercase tracking-[0.2em] flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+            System Status: Optimal & Secure
+          </p>
+        </div>
         
         {/* Header Cards Grid */}
         <div className="grid grid-cols-4 gap-6">

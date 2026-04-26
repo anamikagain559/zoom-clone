@@ -107,7 +107,7 @@ function App() {
       ) : (
         <Layout onAction={handleDashboardAction} activeView={view} user={user} onLogout={handleLogout}>
           {view === 'dashboard' && (
-            <Dashboard onAction={handleDashboardAction} />
+            <Dashboard onAction={handleDashboardAction} user={user} />
           )}
           
           {view === 'join' && (
