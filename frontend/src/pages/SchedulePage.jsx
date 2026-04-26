@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-const SchedulePage = ({ onAction }) => {
+import { useNavigate } from 'react-router-dom';
+
+const SchedulePage = () => {
+  const navigate = useNavigate();
   const [topic, setTopic] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -15,7 +18,11 @@ const SchedulePage = ({ onAction }) => {
     e.preventDefault();
     console.log({ topic, date, time, duration, passcode, waitingRoom, calendar });
     alert(`Mission Scheduled: ${topic}`);
-    onAction('home');
+    navigate('/');
+  };
+
+  const onAction = (action) => {
+    if (action === 'home') navigate('/');
   };
 
   return (

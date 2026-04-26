@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
-const Dashboard = ({ onAction, user }) => {
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+const Dashboard = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upcoming');
+
+  const onAction = (action) => {
+    if (action === 'new') {
+        const newRoomId = Math.random().toString(36).substring(2, 9);
+        navigate(`/room/${newRoomId}`);
+    } else if (action === 'join') {
+        navigate('/join');
+    } else if (action === 'schedule') {
+        navigate('/schedule');
+    }
+  };
 
   const meetings = [
     {

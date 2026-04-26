@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import loginBg from '../assets/login-bg.png';
 
-const RegistrationPage = ({ onRegister, onSwitchToLogin }) => {
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+const RegistrationPage = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,8 +31,8 @@ const RegistrationPage = ({ onRegister, onSwitchToLogin }) => {
       const data = await resp.json();
       
       if (resp.ok) {
-        localStorage.setItem('token', data.token);
-        onRegister(data.user);
+        login(data.user, data.token);
+        navigate('/');
       } else {
         alert(data.message || 'Registration failed');
       }
@@ -143,7 +148,7 @@ const RegistrationPage = ({ onRegister, onSwitchToLogin }) => {
           {/* Switch to Login */}
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
             <p className="text-[11px] text-white/40 font-medium">
-              Already have credentials? <span onClick={onSwitchToLogin} className="text-primary cursor-pointer hover:underline font-bold transition-pro">Return to Base</span>
+              Already have credentials? <span onClick={() => navigate('/login')} className="text-primary cursor-pointer hover:underline font-bold transition-pro">Return to Base</span>
             </p>
           </div>
         </div>

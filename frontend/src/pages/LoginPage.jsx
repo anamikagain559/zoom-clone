@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import loginBg from '../assets/login-bg.png';
 
-const LoginPage = ({ onLogin, onSwitchToRegister }) => {
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+const LoginPage = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,8 +25,8 @@ const LoginPage = ({ onLogin, onSwitchToRegister }) => {
       const data = await resp.json();
       
       if (resp.ok) {
-        localStorage.setItem('token', data.token);
-        onLogin(data.user);
+        login(data.user, data.token);
+        navigate('/');
       } else {
         alert(data.message || 'Access Denied');
       }
@@ -118,7 +123,7 @@ const LoginPage = ({ onLogin, onSwitchToRegister }) => {
 
           {/* Footer UI */}
           <div className="mt-10 pt-6 border-t border-white/5 flex flex-col items-center gap-4">
-            <p className="text-[11px] text-white/40 font-medium">New to Workspace? <span onClick={onSwitchToRegister} className="text-primary cursor-pointer hover:underline font-bold transition-pro">Deploy Component</span></p>
+            <p className="text-[11px] text-white/40 font-medium">New to Workspace? <span onClick={() => navigate('/register')} className="text-primary cursor-pointer hover:underline font-bold transition-pro">Deploy Component</span></p>
             
             <div className="flex items-center gap-4 w-full">
               <div className="h-px bg-white/5 flex-1"></div>

@@ -2,7 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 
-const Room = ({ roomId, userName, onLeave }) => {
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+const Room = () => {
+  const { roomId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  
+  const userName = location.state?.userName || user?.name || 'Guest';
+  const onLeave = () => navigate('/');
+
   const [micOn, setMicOn] = useState(true);
   const [videoOn, setVideoOn] = useState(true);
   const [peers, setPeers] = useState({}); // Tracking call objects to close them later

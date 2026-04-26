@@ -119,7 +119,10 @@ const CameraPreview = ({ noVideo }) => {
 /* ─────────────────────────────────────────────
    Main JoinPage
 ───────────────────────────────────────────── */
-const JoinPage = ({ onJoin, onAction }) => {
+import { useNavigate } from 'react-router-dom';
+
+const JoinPage = () => {
+  const navigate = useNavigate();
   const [roomId, setRoomId] = useState('');
   const [name, setName] = useState('');
   const [noAudio, setNoAudio] = useState(false);
@@ -132,8 +135,12 @@ const JoinPage = ({ onJoin, onAction }) => {
     if (!name.trim() || !roomId.trim()) return;
     setIsLoading(true);
     setTimeout(() => {
-      onJoin(roomId, name);
+      navigate(`/room/${roomId}`, { state: { userName: name } });
     }, 600);
+  };
+
+  const onAction = (action) => {
+    if (action === 'home') navigate('/');
   };
 
   return (
